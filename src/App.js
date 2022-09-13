@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import PostItem from "./components/PostItem";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        fetch("https://react-api.cederdorff.com/wp-json/wp/v2/posts?_embed")
+            .then(res => res.json())
+            .then(setPosts);
+    }, []);
+
+    return (
+        <>
+            <header className="topbar">
+                <h1>Fetch Posts From Headless WP</h1>
+            </header>
+            <main className="page">
+                <section className="grid-container">
+                    {posts.map(post => (
+                        <PostItem key={post.id} post={post} />
+                    ))}
+                </section>
+            </main>
+        </>
+    );
 }
 
 export default App;
