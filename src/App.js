@@ -5,9 +5,13 @@ function App() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetch("https://react-api.cederdorff.com/wp-json/wp/v2/posts?_embed")
-            .then(res => res.json())
-            .then(setPosts);
+        async function getData() {
+            const response = await fetch("https://react-api.cederdorff.com/wp-json/wp/v2/posts?_embed");
+            const data = await response.json();
+            console.log(data);
+            setPosts(data);
+        }
+        getData();
     }, []);
 
     return (
